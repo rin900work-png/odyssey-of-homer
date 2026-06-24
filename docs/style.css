@@ -137,6 +137,50 @@ ul.plain li {
 ul.plain li:last-child { border-bottom: none; }
 ul.plain strong { color: var(--accent); }
 
+/* Иллюстрации (произведения в общественном достоянии) */
+figure.art { margin: 0 0 22px; }
+figure.art img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 24px rgba(27, 73, 101, .14);
+}
+figure.art figcaption,
+.char-art figcaption {
+  margin-top: 7px;
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Персонажи (с иллюстрациями и без) */
+ul.chars { list-style: none; margin: 0; padding: 0; }
+ul.chars li.char {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+ul.chars li.char:last-child { border-bottom: none; }
+ul.chars li.has-art {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+.char-text strong { color: var(--accent); }
+.char-art { margin: 0; flex: 0 0 130px; }
+.char-art img {
+  width: 130px;
+  height: 165px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 14px rgba(27, 73, 101, .12);
+}
+.char-art figcaption { font-size: 11px; line-height: 1.35; }
+
 /* Страница песни */
 .crumb { margin-bottom: 18px; }
 .crumb a, a { color: var(--accent); }
@@ -206,4 +250,7 @@ a:hover { color: var(--gold); }
   body { font-size: 17px; }
   h1 { font-size: 28px; }
   .wrap { padding: 24px 16px 40px; }
+  ul.chars li.has-art { flex-direction: column; }
+  .char-art { flex-basis: auto; width: 100%; }
+  .char-art img { width: 100%; height: auto; max-height: 280px; }
 }

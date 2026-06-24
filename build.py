@@ -86,10 +86,26 @@ def build_index():
             % (e(p["num"]), e(p["name"]), e(p["range"]), e(p["blurb"]), "\n".join(items))
         )
 
-    chars = "\n".join(
-        "    <li><strong>%s.</strong> %s</li>" % (e(name), e(desc))
-        for name, desc in C.CHARACTERS
-    )
+    char_items = []
+    for c in C.CHARACTERS:
+        if c.get("img"):
+            art = (
+                '<figure class="char-art"><img src="img/%s" alt="%s" loading="lazy">'
+                "<figcaption>%s</figcaption></figure>"
+                % (e(c["img"]), e(c["name"]), e(c.get("credit", "")))
+            )
+            char_items.append(
+                '    <li class="char has-art">%s'
+                '<div class="char-text"><strong>%s.</strong> %s</div></li>'
+                % (art, e(c["name"]), e(c["desc"]))
+            )
+        else:
+            char_items.append(
+                '    <li class="char">'
+                '<div class="char-text"><strong>%s.</strong> %s</div></li>'
+                % (e(c["name"]), e(c["desc"]))
+            )
+    chars = "\n".join(char_items)
     themes = "\n".join(
         "    <li><strong>%s.</strong> %s</li>" % (e(name), e(desc))
         for name, desc in C.THEMES
@@ -105,7 +121,7 @@ def build_index():
         '<h2 class="sec-h">Композиция</h2>\n'
         "%s\n\n"
         '<h2 class="sec-h">Главные герои</h2>\n'
-        '<ul class="plain">\n%s\n</ul>\n\n'
+        '<ul class="chars">\n%s\n</ul>\n\n'
         '<h2 class="sec-h">Сквозные темы</h2>\n'
         '<ul class="plain">\n%s\n</ul>\n'
     ) % (
@@ -124,6 +140,15 @@ def build_song(s):
     n = s["n"]
     moments = "\n".join("    <li>%s</li>" % e(mm) for mm in s["moments"])
 
+    art_html = ""
+    if s.get("img"):
+        art_html = (
+            '  <figure class="art">\n'
+            '    <img src="img/%s" alt="%s" loading="lazy">\n'
+            "    <figcaption>%s</figcaption>\n"
+            "  </figure>\n"
+        ) % (e(s["img"]), e(s["title"]), e(s.get("credit", "")))
+
     prev_link = (
         '<a class="nav-prev" href="%s">← Песнь %d</a>' % (song_href(n - 1), n - 1)
         if n > 1
@@ -140,6 +165,7 @@ def build_song(s):
         '<article class="song">\n'
         '  <p class="song-eyebrow">Песнь %d из 24</p>\n'
         "  <h1>%s</h1>\n"
+        "%s"
         '  <dl class="song-meta">\n'
         "    <dt>Где</dt><dd>%s</dd>\n"
         "    <dt>Кто</dt><dd>%s</dd>\n"
@@ -155,6 +181,7 @@ def build_song(s):
     ) % (
         n,
         e(s["title"]),
+        art_html,
         e(s["where"]),
         e(s["who"]),
         e(s["summary"]),
@@ -183,6 +210,10 @@ def main():
 
     # Стили рядом со страницами
     shutil.copyfile(os.path.join(STATIC, "style.css"), os.path.join(OUT, "style.css"))
+    # Иллюстрации (общественное достояние)
+    img_src = os.path.join(STATIC, "img")
+    if os.path.isdir(img_src):
+        shutil.copytree(img_src, os.path.join(OUT, "img"))
     # Отключаем обработку Jekyll на GitHub Pages — раздаём файлы как есть
     write(os.path.join(OUT, ".nojekyll"), "")
 
