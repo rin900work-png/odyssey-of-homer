@@ -1,0 +1,209 @@
+/* Одиссея — статический разбор. Тема «Эгейское море»: тёплый пергамент + глубокая синь. */
+
+:root {
+  --bg: #fbf7ef;
+  --surface: #ffffff;
+  --ink: #2a2622;
+  --muted: #6b635a;
+  --accent: #1b4965;      /* эгейская синь */
+  --accent-soft: #e8eef2;
+  --line: #e6ded1;
+  --gold: #a9743b;        /* охра/бронза */
+  --max: 760px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", "PT Serif", serif;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+/* Шапка */
+.site-header {
+  background: var(--accent);
+  color: #fff;
+  padding: 18px 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.brand {
+  color: #fff;
+  text-decoration: none;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.brand-sub {
+  color: #cdddE7;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Контейнер */
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 36px 24px 56px;
+}
+
+h1 {
+  font-size: 34px;
+  line-height: 1.2;
+  margin: 0 0 16px;
+  color: var(--accent);
+}
+.sec-h {
+  font-size: 20px;
+  margin: 32px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+  color: var(--gold);
+  letter-spacing: .01em;
+}
+
+p { margin: 0 0 14px; }
+
+/* Главная */
+.hero .lede {
+  font-size: 20px;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+.part {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 0 0 18px;
+}
+.part-h {
+  margin: 0 0 6px;
+  font-size: 21px;
+  color: var(--accent);
+}
+.part-num {
+  display: inline-block;
+  min-width: 1.6em;
+  color: var(--gold);
+  font-weight: 700;
+}
+.part-range {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--muted);
+  font-weight: 400;
+}
+.part-blurb { color: var(--muted); margin: 0 0 12px; }
+
+.song-list { list-style: none; margin: 0; padding: 0; }
+.song-list li { margin: 0; }
+.song-list a {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 10px;
+  text-decoration: none;
+  color: var(--ink);
+  border-radius: 6px;
+}
+.song-list a:hover { background: var(--accent-soft); }
+.song-n {
+  flex: 0 0 auto;
+  width: 2em;
+  text-align: right;
+  color: var(--gold);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.song-t { flex: 1 1 auto; }
+
+ul.plain { list-style: none; margin: 0; padding: 0; }
+ul.plain li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+ul.plain li:last-child { border-bottom: none; }
+ul.plain strong { color: var(--accent); }
+
+/* Страница песни */
+.crumb { margin-bottom: 18px; }
+.crumb a, a { color: var(--accent); }
+a:hover { color: var(--gold); }
+
+.song-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: 12px;
+  color: var(--gold);
+  margin: 0 0 6px;
+  font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+.song-meta {
+  background: var(--accent-soft);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 0 0 8px;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 16px;
+}
+.song-meta dt {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+}
+.song-meta dd { margin: 0; }
+
+.moments { padding-left: 1.2em; margin: 0 0 8px; }
+.moments li { margin: 0 0 8px; }
+
+.significance {
+  font-style: italic;
+  color: var(--muted);
+  border-left: 3px solid var(--gold);
+  padding-left: 14px;
+}
+
+/* Навигация между песнями */
+.song-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 36px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 16px;
+}
+.song-nav a { text-decoration: none; font-weight: 700; }
+.nav-off { color: var(--line); }
+
+/* Подвал */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 20px 24px;
+  text-align: center;
+}
+.site-footer p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-style: italic;
+}
+
+@media (max-width: 520px) {
+  body { font-size: 17px; }
+  h1 { font-size: 28px; }
+  .wrap { padding: 24px 16px 40px; }
+}
