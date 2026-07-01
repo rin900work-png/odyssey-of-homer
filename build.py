@@ -19,11 +19,63 @@ import content as C
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "docs")
 STATIC = os.path.join(ROOT, "static")
+TEXTS = os.path.join(ROOT, "texts")
+
+STANZA = 10      # стихов в одной визуальной строфе
+NUM_EVERY = 10   # показывать номер стиха каждые N строк
 
 
 def e(text):
     """Экранирование для HTML."""
     return html.escape(str(text))
+
+
+def read_verses(n):
+    """Читает полный текст песни из texts/song-NN.txt (один стих на строку).
+
+    Возвращает список стихов или None, если файла нет.
+    """
+    path = os.path.join(TEXTS, "song-%02d.txt" % n)
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as f:
+        verses = [ln.rstrip() for ln in f.read().split("\n")]
+    return [v for v in verses if v.strip() != ""]
+
+
+def render_reader(n):
+    """Раскрывающийся блок с полным текстом песни: строфы + нумерация стихов."""
+    verses = read_verses(n)
+    if not verses:
+        return ""
+
+    def verse_html(i, v):
+        show = (i == 1) or (i % NUM_EVERY == 0)
+        return (
+            '        <p class="verse"><span class="vn">%s</span>'
+            '<span class="vt">%s</span></p>' % (str(i) if show else "", e(v))
+        )
+
+    stanzas = []
+    for start in range(0, len(verses), STANZA):
+        chunk = verses[start:start + STANZA]
+        rows = "\n".join(verse_html(start + 1 + j, v) for j, v in enumerate(chunk))
+        stanzas.append('      <div class="stanza">\n%s\n      </div>' % rows)
+
+    return (
+        '  <section class="reader">\n'
+        '    <details class="reader-details">\n'
+        '      <summary class="reader-toggle">\n'
+        '        <span class="reader-toggle-label">Читать полный текст песни</span>\n'
+        '        <span class="reader-toggle-meta">перевод В. А. Жуковского'
+        " · %d стихов</span>\n"
+        "      </summary>\n"
+        '      <div class="poem">\n%s\n      </div>\n'
+        '      <p class="reader-source">Источник: Викитека (ru.wikisource.org), '
+        "перевод В. А. Жуковского. Общественное достояние.</p>\n"
+        "    </details>\n"
+        "  </section>\n"
+    ) % (len(verses), "\n".join(stanzas))
 
 
 def song_href(n):
@@ -139,6 +191,7 @@ def build_index():
 def build_song(s):
     n = s["n"]
     moments = "\n".join("    <li>%s</li>" % e(mm) for mm in s["moments"])
+    reader_html = render_reader(n)
 
     art_html = ""
     if s.get("img"):
@@ -177,6 +230,7 @@ def build_song(s):
         '  <h2 class="sec-h">Значение</h2>\n'
         '  <p class="significance">%s</p>\n'
         "</article>\n"
+        "%s"
         '<nav class="song-nav">%s%s</nav>\n'
     ) % (
         n,
@@ -187,6 +241,7 @@ def build_song(s):
         e(s["summary"]),
         moments,
         e(s["significance"]),
+        reader_html,
         prev_link,
         next_link,
     )
