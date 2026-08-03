@@ -1,0 +1,30 @@
+{
+  "chars": {},
+  "songs": {
+    "1": {
+      "credit": "Jacques-Louis David · The Anger of Achilles title QS:P1476,en:\"The Anger of Achilles\" label QS:Len,\"The Anger… · 1819. Общественное достояние.",
+      "file": "song-01.jpg",
+      "source": "File:Jacques-Louis David - The Anger of Achilles - Google Art Project.jpg"
+    },
+    "2": {
+      "credit": "Author: Alfred John Church Illustrator: John Flaxman · Ajax defending the Greek Ships against the Trojans · 1895. Общественное достояние.",
+      "file": "song-02.jpg",
+      "source": "File:Ajax defending the Greek Ships against the Trojans.jpg"
+    },
+    "3": {
+      "credit": "Jacques-Louis David · French: Les amours de Pâris et d'Hélène Paris and Helen title QS:P1476,fr:\"Les amours de… · 1788. Общественное достояние.",
+      "file": "song-03.jpg",
+      "source": "File:The Love of Paris and Helen by Jacques-Louis David.jpg"
+    },
+    "5": {
+      "credit": "Jean-Auguste-Dominique Ingres · Venus wounded by Diomede ascends to heaven label QS:Len,\"Venus, Injured by Diomedes,… · 1800. Общественное достояние.",
+      "file": "song-05.jpg",
+      "source": "File:Jean Auguste Dominique Ingres - Venus, Injured by Diomedes, Returns to OlympusFXD.jpg"
+    },
+    "7": {
+      "credit": "A. J. Church · Story of the Iliad-Church-1892-0125 · 1892. Общественное достояние.",
+      "file": "song-07.jpg",
+      "source": "File:Story of the Iliad-Church-1892-0125.jpg"
+    }
+  }
+}
