@@ -1,5 +1,6 @@
-/* Гомер — статический разбор. Общий пергамент, у каждой поэмы свой акцент:
-   «Одиссея» — эгейская синь, «Илиада» — троянская бронза. */
+/* Гомер и Вергилий — статический разбор. Общий пергамент, у каждой поэмы свой
+   акцент: «Одиссея» — эгейская синь, «Илиада» — троянская бронза,
+   «Энеида» — имперский пурпур. */
 
 :root {
   --bg: #fbf7ef;
@@ -19,12 +20,18 @@ body.theme-iliad {
   --accent-soft: #f5e9e4;
   --gold: #9a6b2f;        /* бронза */
 }
+body.theme-aeneid {
+  --accent: #5b3a6b;      /* имперский пурпур */
+  --accent-soft: #ede4f0;
+  --gold: #a9743b;        /* римское золото */
+}
 body.theme-site {
   --accent: #3d3a34;      /* титульная — нейтральный тёмный */
   --accent-soft: #efeae0;
   --gold: #a9743b;
 }
 body.theme-iliad .brand-sub { color: #eccfc7; }
+body.theme-aeneid .brand-sub { color: #e4d5e9; }
 body.theme-site .brand-sub { color: #d8d2c6; }
 
 * { box-sizing: border-box; }
@@ -352,7 +359,7 @@ a:hover { color: var(--gold); }
 
 .cards {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 22px;
   margin: 26px 0 8px;
 }
@@ -387,6 +394,7 @@ a:hover { color: var(--gold); }
 }
 .card-odyssey .card-text h2 { color: #1b4965; }
 .card-iliad .card-text h2 { color: #7a2b22; }
+.card-aeneid .card-text h2 { color: #5b3a6b; }
 .card-blurb {
   margin: 0 0 10px;
   font-size: 16px;
@@ -408,6 +416,10 @@ a:hover { color: var(--gold); }
   color: var(--muted);
 }
 .other-book a { color: var(--accent); }
+
+@media (max-width: 700px) {
+  .cards { grid-template-columns: 1fr 1fr; }
+}
 
 @media (max-width: 620px) {
   .cards { grid-template-columns: 1fr; gap: 18px; }

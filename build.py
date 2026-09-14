@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Сборка статического сайта-разбора Гомера в папку docs/.
+"""Сборка статического сайта-разбора античного эпоса в папку docs/.
 
-Сайт двухчастный: «Одиссея» и «Илиада». Титульная страница (index.html) —
-выбор поэмы, дальше у каждой своя страница-оглавление и свои 24 песни.
+Сайт трёхчастный: «Одиссея», «Илиада» и «Энеида». Титульная страница
+(index.html) — выбор поэмы, дальше у каждой своё оглавление и свои песни.
 
 Без внешних зависимостей — только стандартная библиотека Python 3.
 Запуск:  python3 build.py
@@ -12,6 +12,8 @@
     docs/odyssey-song-01..24.html  — песни «Одиссеи»
     docs/iliad.html                — оглавление «Илиады»
     docs/iliad-song-01..24.html    — песни «Илиады»
+    docs/aeneid.html               — оглавление «Энеиды»
+    docs/aeneid-song-01..12.html   — песни «Энеиды»
     docs/song-01..24.html          — заглушки-редиректы со старых адресов
     docs/style.css, docs/img/, docs/.nojekyll
 
@@ -24,6 +26,7 @@ import html
 import os
 import shutil
 
+import content_aeneid
 import content_iliad
 import content_odyssey
 
@@ -35,8 +38,8 @@ TEXTS = os.path.join(ROOT, "texts")
 STANZA = 10      # стихов в одной визуальной строфе
 NUM_EVERY = 10   # показывать номер стиха каждые N строк
 
-SITE_TITLE = "Гомер"
-SITE_SUB = "«Одиссея» и «Илиада» — краткий разбор по песням"
+SITE_TITLE = "Гомер и Вергилий"
+SITE_SUB = "«Одиссея», «Илиада» и «Энеида» — краткий разбор по песням"
 
 # Описание поэм. Тексты и картинки лежат в texts/<slug>/ и static/img/<slug>/.
 BOOKS = [
@@ -61,7 +64,39 @@ BOOKS = [
                 "и Гектора — и старик Приам, целующий руки убийцы сына.",
         "legacy": False,
     },
+    {
+        "slug": "aeneid",
+        "content": content_aeneid,
+        "short": "Энеида",
+        # Единственный полный дореволюционный (PD) перевод — И. Г. Шершеневича — на
+        # Викитеке не расшифрован для песен I—II, поэтому режима чтения пока нет.
+        "translator": None,
+        "card": "Троянец Эней после гибели Трои семь лет скитается по морю и приводит "
+                "уцелевших спутников в Италию, где ради судьбы будущего Рима переживает "
+                "любовь Дидоны, войну с Турном и нисхождение в царство мёртвых.",
+        "legacy": False,
+    },
 ]
+
+
+def pesni_word(n):
+    """Склонение слова «песнь» под число: 1 песнь, 2–4 песни, 5+ песен."""
+    if 11 <= n % 100 <= 14:
+        return "песен"
+    tail = n % 10
+    if tail == 1:
+        return "песнь"
+    if 2 <= tail <= 4:
+        return "песни"
+    return "песен"
+
+
+def book_list_str(books):
+    """«Одиссея», «Илиада» и «Энеида» — с союзом перед последним пунктом."""
+    names = ['«%s»' % b["short"] for b in books]
+    if len(names) == 1:
+        return names[0]
+    return "%s и %s" % (", ".join(names[:-1]), names[-1])
 
 
 def e(text):
@@ -106,7 +141,7 @@ def render_reader(book, n):
         '    <details class="reader-details">\n'
         '      <summary class="reader-toggle">\n'
         '        <span class="reader-toggle-label">Читать полный текст песни</span>\n'
-        '        <span class="reader-toggle-meta">перевод %s · %d стихов</span>\n'
+        '        <span class="reader-toggle-meta">перевод %s · %d стихов</span>\n'
         "      </summary>\n"
         '      <div class="poem">\n%s\n      </div>\n'
         '      <p class="reader-source">Источник: Викитека (ru.wikisource.org), '
@@ -145,7 +180,7 @@ def layout(title, body, book=None):
             '  <span class="brand-sub">%s</span>\n'
             "</header>\n"
         ) % (e(SITE_TITLE), e(SITE_SUB))
-        footer = "Гомер · «Одиссея» и «Илиада» · по 24 песни · краткий разбор"
+        footer = "%s · %s · краткий разбор по песням" % (e(SITE_TITLE), e(book_list_str(BOOKS)))
     else:
         theme = "theme-%s" % book["slug"]
         header = (
@@ -158,9 +193,12 @@ def layout(title, body, book=None):
             e(book_href(book)),
             e(book["content"].META["title"]),
             e(book["content"].META["subtitle"]),
-            e("Гомер: обе поэмы"),
+            e(SITE_TITLE),
         )
-        footer = "Гомер · «%s» · 24 песни · краткий разбор" % e(book["short"])
+        count = len(book["content"].SONGS)
+        footer = "%s · «%s» · %d %s · краткий разбор" % (
+            e(SITE_TITLE), e(book["short"]), count, pesni_word(count)
+        )
 
     return (
         "<!doctype html>\n"
@@ -189,19 +227,26 @@ def build_landing():
     cards = []
     for b in BOOKS:
         m = b["content"].META
+        count = len(b["content"].SONGS)
         cover = ""
         if b.get("cover"):
             cover = (
                 '  <img class="card-art" src="%s" alt="%s" loading="lazy">\n'
                 % (e(img_src(b, b["cover"])), e(m["title"]))
             )
+        if b.get("translator"):
+            meta_line = "%d %s · полный текст в переводе %s" % (
+                count, pesni_word(count), b["translator"]
+            )
+        else:
+            meta_line = "%d %s · без полного текста (пока)" % (count, pesni_word(count))
         cards.append(
             '<a class="card card-%s" href="%s">\n'
             "%s"
             '  <div class="card-text">\n'
             "    <h2>%s</h2>\n"
             '    <p class="card-blurb">%s</p>\n'
-            '    <p class="card-meta">24 песни · полный текст в переводе %s</p>\n'
+            '    <p class="card-meta">%s</p>\n'
             "  </div>\n"
             "</a>"
             % (
@@ -210,7 +255,7 @@ def build_landing():
                 cover,
                 e(m["title"]),
                 e(b["card"]),
-                b["translator"],
+                e(meta_line),
             )
         )
 
@@ -218,14 +263,15 @@ def build_landing():
         '<section class="hero hero-site">\n'
         "  <h1>%s</h1>\n"
         '  <p class="lede">%s</p>\n'
-        "  <p>Две поэмы, приписываемые Гомеру (ок. VIII в. до н. э.), — разбор каждой "
-        "песни и полный текст в классическом русском переводе. «Илиада» — о гневе "
-        "Ахиллеса на десятом году осады Трои; «Одиссея» — о десятилетнем возвращении "
-        "домой после её падения.</p>\n"
+        "  <p>Три поэмы античного эпоса — разбор каждой песни, а для «Одиссеи» и «Илиады» "
+        "ещё и полный текст в классическом русском переводе. Гомеровские «Илиада» — о гневе "
+        "Ахиллеса на десятом году осады Трои, «Одиссея» — о десятилетнем возвращении домой "
+        "после её падения; «Энеида» Вергилия — о том, как уцелевший троянец приводит "
+        "спутников в Италию, чтобы стать родоначальником Рима.</p>\n"
         "</section>\n\n"
         '<div class="cards">\n%s\n</div>\n'
     ) % (e(SITE_TITLE), e(SITE_SUB), "\n".join(cards))
-    return layout("%s — «Одиссея» и «Илиада»" % SITE_TITLE, body, book=None)
+    return layout("%s — %s" % (SITE_TITLE, book_list_str(BOOKS)), body, book=None)
 
 
 def build_book_index(book):
@@ -276,9 +322,14 @@ def build_book_index(book):
         for name, desc in C.THEMES
     )
 
-    other = [b for b in BOOKS if b is not book][0]
+    others = [b for b in BOOKS if b is not book]
+    other_links = ", ".join(
+        '<a href="%s">%s</a>' % (e(book_href(o)), e(o["content"].META["title"]))
+        for o in others
+    )
+    other_label = "Читать другую поэму" if len(others) == 1 else "Читать другие поэмы"
     body = (
-        '<p class="crumb"><a href="index.html">← Обе поэмы</a></p>\n'
+        '<p class="crumb"><a href="index.html">← Все поэмы</a></p>\n'
         '<section class="hero">\n'
         "  <h1>%s</h1>\n"
         '  <p class="lede">%s</p>\n'
@@ -291,7 +342,7 @@ def build_book_index(book):
         '<ul class="chars">\n%s\n</ul>\n\n'
         '<h2 class="sec-h">Сквозные темы</h2>\n'
         '<ul class="plain">\n%s\n</ul>\n\n'
-        '<p class="other-book">Читать вторую поэму: <a href="%s">%s</a></p>\n'
+        '<p class="other-book">%s: %s</p>\n'
     ) % (
         e(m["title"]),
         e(m["subtitle"]),
@@ -300,8 +351,8 @@ def build_book_index(book):
         "\n".join(parts_html),
         chars,
         themes,
-        e(book_href(other)),
-        e(other["content"].META["title"]),
+        other_label,
+        other_links,
     )
     return layout(m["title"], body, book=book)
 
@@ -309,6 +360,7 @@ def build_book_index(book):
 def build_song(book, s):
     C = book["content"]
     n = s["n"]
+    total = len(C.SONGS)
     moments = "\n".join("    <li>%s</li>" % e(mm) for mm in s["moments"])
     reader_html = render_reader(book, n)
 
@@ -328,15 +380,15 @@ def build_song(book, s):
     )
     next_link = (
         '<a class="nav-next" href="%s">Песнь %d →</a>' % (song_href(book, n + 1), n + 1)
-        if n < len(C.SONGS)
+        if n < total
         else '<span class="nav-next nav-off">→</span>'
     )
 
     body = (
         '<p class="crumb"><a href="%s">← Все песни</a> · '
-        '<a href="index.html">обе поэмы</a></p>\n'
+        '<a href="index.html">все поэмы</a></p>\n'
         '<article class="song">\n'
-        '  <p class="song-eyebrow">%s · песнь %d из 24</p>\n'
+        '  <p class="song-eyebrow">%s · песнь %d из %d</p>\n'
         "  <h1>%s</h1>\n"
         "%s"
         '  <dl class="song-meta">\n'
@@ -356,6 +408,7 @@ def build_song(book, s):
         e(book_href(book)),
         e(book["short"]),
         n,
+        total,
         e(s["title"]),
         art_html,
         e(s["where"]),
