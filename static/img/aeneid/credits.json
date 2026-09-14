@@ -1,0 +1,126 @@
+{
+  "chars": {
+    "Анхис": {
+      "credit": "Charles André van Loo · Énée portant Anchise · 1729. Общественное достояние.",
+      "file": "char-04.jpg",
+      "source": "File:Eneasanquises.jpg"
+    },
+    "Асканий (Юл)": {
+      "credit": "Marie-Lan Nguyen · Venus Juno Aeneas Louvre OA6596 · 2009. Общественное достояние.",
+      "file": "char-05.jpg",
+      "source": "File:Venus Juno Aeneas Louvre OA6596.jpg"
+    },
+    "Венера": {
+      "credit": "Gerard de Lairesse · Dutch: Venus schenkt wapens aan Aeneas Venus hands over the armour made by Vulcan to… · 1668. Общественное достояние.",
+      "file": "char-11.jpg",
+      "source": "File:Venus schenkt wapens aan Aeneas - Lairesse.jpg"
+    },
+    "Дидона": {
+      "credit": "Jacopo Amigoni · Aeneas and Achates wafted in a Cloud before Dido, Queen of Carthage, with Cupid at her… · 1732. Общественное достояние.",
+      "file": "char-02.jpg",
+      "source": "File:Jacopo Amigoni (c.1682-1752) - Aeneas and Achates Wafted in a Cloud before Dido, Queen of Carthage, with Cupid at Her Feet - 772276 - National Trust.jpg"
+    },
+    "Камилла": {
+      "credit": "см. content_aeneid.py — подпись подобрана вручную",
+      "file": "char-09.jpg",
+      "source": "Antonio Tempesta - The Death of Camilla"
+    },
+    "Латин и Лавиния": {
+      "credit": "Master of the Aeneid · War is Declared Against the Trojans · 1530. Общественное достояние.",
+      "file": "char-06.jpg",
+      "source": "File:Master of the Aeneid Legend - War is Declared Against the Trojans - Walters 44353.jpg"
+    },
+    "Мезенций": {
+      "credit": "см. content_aeneid.py — подпись подобрана вручную",
+      "file": "char-10.jpg",
+      "source": "Bartolomeo Pinelli - Aeneas and the body of Lausus"
+    },
+    "Низ и Эвриал": {
+      "credit": "см. content_aeneid.py — подпись подобрана вручную",
+      "file": "char-08.jpg",
+      "source": "Jean-Baptiste Roman / Francois Rude - Nisus et Euryale - Louvre"
+    },
+    "Турн": {
+      "credit": "Giacomo del Po · The Fight between Aeneas and King Turnus, from Virgil’s Aeneid · 1700. Общественное достояние.",
+      "file": "char-03.jpg",
+      "source": "File:The Fight between Aeneas and King Turnus, from Virgil's Aeneid LACMA M.2000.93.jpg"
+    },
+    "Эвандр и Паллант": {
+      "credit": "Mateus2019 · Kauffmann, Angelika — Aeneas trauert um den von Turnus getöteten Pallas (Ölskizze 1786) · 1520. Общественное достояние.",
+      "file": "char-07.jpg",
+      "source": "File:Kauffmann, Angelika — Aeneas trauert um den von Turnus getöteten Pallas (Ölskizze 1786).jpg"
+    },
+    "Эней": {
+      "credit": "Rijksmuseum · Sculptuur van Aeneas en Anchises P.e 1.a N.o 6809. ROMA - Museo della Villa Borghese.… · 1880. Общественное достояние.",
+      "file": "char-01.jpg",
+      "source": "File:Sculptuur van Aeneas en Anchises P.e 1.a N.o 6809. ROMA - Museo della Villa Borghese. Enea ed Anchise. (Bernini) (titel op object), RP-F-00-1647.jpg"
+    },
+    "Юнона": {
+      "credit": "anonymous · Adoration of Goddess Juno · 1760. Общественное достояние.",
+      "file": "char-12.jpg",
+      "source": "File:Unknown artist - Adoration of Goddess Juno - F16 - Saffron Walden Museum.jpg"
+    }
+  },
+  "songs": {
+    "1": {
+      "credit": "см. content_aeneid.py — подпись подобрана вручную",
+      "file": "song-01.jpg",
+      "source": "J. M. W. Turner - Dido building Carthage - 1815"
+    },
+    "10": {
+      "credit": "см. content_aeneid.py — подпись подобрана вручную",
+      "file": "song-10.jpg",
+      "source": "Wenceslas Hollar - Aeneas fight with Mezentius and Lausus"
+    },
+    "11": {
+      "credit": "Wenceslaus Hollar · The meeting of Turnus and Camilla . State 2. · 1607. Общественное достояние.",
+      "file": "song-11.jpg",
+      "source": "File:Wenceslas Hollar - The meeting of Turnus and Camilla (State 2).jpg"
+    },
+    "12": {
+      "credit": "Luca Giordano · Aeneas and Turnus · 1688. Общественное достояние.",
+      "file": "song-12.jpg",
+      "source": "File:Aeneas and Turnus.jpg"
+    },
+    "2": {
+      "credit": "Federico Barocci · Italian: Fuga di Enea da Troia Escape of Aeneas from Troy · 1598. Общественное достояние.",
+      "file": "song-02.jpg",
+      "source": "File:Aeneas' Flight from Troy by Federico Barocci.jpg"
+    },
+    "3": {
+      "credit": "Claude Lorrain · Landscape with Aeneas at Delos · 1672. Общественное достояние.",
+      "file": "song-03.jpg",
+      "source": "File:Claude Lorrain - Landscape with Aeneas at Delos - WGA05015.jpg"
+    },
+    "4": {
+      "credit": "J. M. W. Turner · Dido and Aeneas · 1814. Общественное достояние.",
+      "file": "song-04.jpg",
+      "source": "File:Joseph Mallord William Turner (1775-1851) - Dido and Aeneas - N00494 - National Gallery.jpg"
+    },
+    "5": {
+      "credit": "см. content_aeneid.py — подпись подобрана вручную",
+      "file": "song-05.jpg",
+      "source": "Nisus and Euryalus in funeral games for Anchises, Book V"
+    },
+    "6": {
+      "credit": "Didier Descouens · (Barcelona) The Golden Bough - Joseph Mallord William Turner - Tate Britain · 2320. Общественное достояние.",
+      "file": "song-06.jpg",
+      "source": "File:(Barcelona) The Golden Bough - Joseph Mallord William Turner - Tate Britain.jpg"
+    },
+    "7": {
+      "credit": "Claude Lorrain · Coast Scene with the Landing of Aeneas in Latium. Общественное достояние.",
+      "file": "song-07.jpg",
+      "source": "File:Claude Lorrain (1604-1682) (after) - Coast Scene with the Landing of Aeneas in Latium - TWCMS , C173 - Shipley Art Gallery.jpg"
+    },
+    "8": {
+      "credit": "anonymous · Venus in Vulcan's Forge · 1800. Общественное достояние.",
+      "file": "song-08.jpg",
+      "source": "File:François Boucher (1703-1770) (after) - Venus in Vulcan's Forge (reduced copy of an original painting from 1747) - 446776 - National Trust.jpg"
+    },
+    "9": {
+      "credit": "см. content_aeneid.py — подпись подобрана вручную",
+      "file": "song-09.jpg",
+      "source": "Master of the Aeneid (Limoges enamel) - Nisus and Euryalus surprise the Rutuli, Book IX"
+    }
+  }
+}
