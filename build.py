@@ -8,6 +8,7 @@
 Запуск:  python3 build.py
 Результат:
     docs/index.html                — титульная, выбор поэмы
+    docs/names.html                — справочник: греческие имена ↔ латинские
     docs/odyssey.html              — оглавление «Одиссеи»
     docs/odyssey-song-01..24.html  — песни «Одиссеи»
     docs/iliad.html                — оглавление «Илиады»
@@ -28,6 +29,7 @@ import shutil
 
 import content_aeneid
 import content_iliad
+import content_names
 import content_odyssey
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -40,6 +42,7 @@ NUM_EVERY = 10   # показывать номер стиха каждые N с�
 
 SITE_TITLE = "Гомер и Вергилий"
 SITE_SUB = "«Одиссея», «Илиада» и «Энеида» — краткий разбор по песням"
+NAMES_LINK_TEXT = "Боги: кто есть кто"
 
 # Описание поэм. Тексты и картинки лежат в texts/<slug>/ и static/img/<slug>/.
 BOOKS = [
@@ -179,8 +182,9 @@ def layout(title, body, book=None):
             '<header class="site-header">\n'
             '  <span class="brand">%s</span>\n'
             '  <span class="brand-sub">%s</span>\n'
+            '  <a class="brand-home" href="names.html">%s</a>\n'
             "</header>\n"
-        ) % (e(SITE_TITLE), e(SITE_SUB))
+        ) % (e(SITE_TITLE), e(SITE_SUB), e(NAMES_LINK_TEXT))
         footer = "%s · %s · краткий разбор по песням" % (e(SITE_TITLE), e(book_list_str(BOOKS)))
     else:
         theme = "theme-%s" % book["slug"]
@@ -189,12 +193,14 @@ def layout(title, body, book=None):
             '  <a class="brand" href="%s">%s</a>\n'
             '  <span class="brand-sub">%s</span>\n'
             '  <a class="brand-home" href="index.html">%s</a>\n'
+            '  <a class="brand-names" href="names.html">%s</a>\n'
             "</header>\n"
         ) % (
             e(book_href(book)),
             e(book["content"].META["title"]),
             e(book["content"].META["subtitle"]),
             e(SITE_TITLE),
+            e(NAMES_LINK_TEXT),
         )
         count = len(book["content"].SONGS)
         footer = "%s · «%s» · %d %s · краткий разбор" % (
@@ -273,6 +279,44 @@ def build_landing():
         '<div class="cards">\n%s\n</div>\n'
     ) % (e(SITE_TITLE), e(SITE_SUB), "\n".join(cards))
     return layout("%s — %s" % (SITE_TITLE, book_list_str(BOOKS)), body, book=None)
+
+
+def build_names_page():
+    """Справочник: греческие имена богов (Гомер) ↔ латинские (Вергилий)."""
+    rows = "\n".join(
+        '    <tr><td>%s</td><td>%s</td><td>%s</td><td class="names-where">%s</td></tr>'
+        % (e(gr), e(la), e(desc), e(where))
+        for gr, la, desc, where in content_names.GODS
+    )
+    heroes = "\n".join(
+        '    <li><strong>%s → %s.</strong> %s</li>' % (e(gr), e(la), e(desc))
+        for gr, la, desc in content_names.HEROES
+    )
+    body = (
+        '<p class="crumb"><a href="index.html">← Все поэмы</a></p>\n'
+        '<section class="hero">\n'
+        "  <h1>%s</h1>\n"
+        '  <p class="lede">%s</p>\n'
+        "</section>\n\n"
+        '<h2 class="sec-h">Боги</h2>\n'
+        '<div class="table-wrap">\n'
+        '<table class="names-table">\n'
+        "  <thead>\n"
+        "    <tr><th>У Гомера (по-гречески)</th><th>У Вергилия (по-латыни)</th>"
+        "<th>Кто такой(-ая)</th><th>Где на сайте</th></tr>\n"
+        "  </thead>\n"
+        "  <tbody>\n%s\n  </tbody>\n"
+        "</table>\n"
+        "</div>\n\n"
+        '<h2 class="sec-h">Герои и другие персонажи</h2>\n'
+        '<ul class="plain">\n%s\n</ul>\n'
+    ) % (
+        e("Боги и герои: греческие имена и латинские"),
+        e(content_names.INTRO),
+        rows,
+        heroes,
+    )
+    return layout("Боги и герои — греческие и латинские имена", body, book=None)
 
 
 def build_book_index(book):
@@ -454,6 +498,7 @@ def main():
     os.makedirs(OUT)
 
     write(os.path.join(OUT, "index.html"), build_landing())
+    write(os.path.join(OUT, "names.html"), build_names_page())
 
     pages = 0
     for book in BOOKS:
