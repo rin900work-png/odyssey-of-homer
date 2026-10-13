@@ -96,7 +96,7 @@ BOOKS = [
         "content": content_three_body,
         "short": "Задача трёх тел",
         "unit": "chapter",
-        "cover": None,
+        "cover": "orbit-16.svg",
         # Роман 2006/2008 года и перевод О. Глушковой (2017) под авторским правом —
         # полного текста на сайте не будет, только разбор.
         "translator": None,
