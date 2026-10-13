@@ -218,7 +218,7 @@ def layout(title, body, book=None):
             '  <a class="brand-home" href="names.html">%s</a>\n'
             "</header>\n"
         ) % (e(SITE_TITLE), e(SITE_SUB), e(NAMES_LINK_TEXT))
-        footer = "%s · %s · краткий разбор по песням" % (e(SITE_TITLE), e(book_list_str(BOOKS)))
+        footer = "%s · %s · краткий разбор" % (e(SITE_TITLE), e(book_list_str(BOOKS)))
     else:
         theme = "theme-%s" % book["slug"]
         names_link = ""
