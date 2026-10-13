@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640">
+<defs><radialGradient id="fire"><stop offset=".55" stop-color="#ffb347"/><stop offset="1" stop-color="#7a2a10"/></radialGradient></defs>
+<rect width="1200" height="640" fill="#eadfc6"/>
+<circle cx="600" cy="290" r="265" fill="url(#fire)" opacity=".85"/>
+<circle cx="600" cy="290" r="230" fill="#1d1813" stroke="#2b2118" stroke-width="3"/>
+<circle cx="401.3" cy="351.3" r="3.1" fill="#ffd27a"/>
+<circle cx="398.5" cy="334.2" r="2.5" fill="#ffd27a"/>
+<circle cx="682.4" cy="479.2" r="2.6" fill="#ffd27a"/>
+<circle cx="651.5" cy="104.0" r="2.0" fill="#ffd27a"/>
+<circle cx="781.8" cy="406.5" r="2.7" fill="#ffd27a"/>
+<circle cx="813.8" cy="347.6" r="3.1" fill="#ffd27a"/>
+<circle cx="481.0" cy="117.4" r="1.8" fill="#ffd27a"/>
+<circle cx="806.0" cy="309.5" r="1.6" fill="#ffd27a"/>
+<circle cx="672.6" cy="474.0" r="1.6" fill="#ffd27a"/>
+<circle cx="401.1" cy="335.9" r="2.9" fill="#ffd27a"/>
+<circle cx="391.0" cy="264.8" r="2.3" fill="#ffd27a"/>
+<circle cx="493.0" cy="115.6" r="2.0" fill="#ffd27a"/>
+<circle cx="821.8" cy="286.7" r="2.9" fill="#ffd27a"/>
+<circle cx="547.6" cy="96.9" r="1.9" fill="#ffd27a"/>
+<circle cx="600" cy="290" r="185" fill="#2a221b" stroke="#2b2118" stroke-width="3"/>
+<circle cx="564.2" cy="432.8" r="2.8" fill="#ffd27a"/>
+<circle cx="460.5" cy="390.8" r="2.2" fill="#ffd27a"/>
+<circle cx="766.2" cy="245.1" r="1.5" fill="#ffd27a"/>
+<circle cx="643.6" cy="458.6" r="2.3" fill="#ffd27a"/>
+<circle cx="756.5" cy="270.6" r="1.6" fill="#ffd27a"/>
+<circle cx="483.3" cy="166.5" r="2.0" fill="#ffd27a"/>
+<circle cx="732.9" cy="371.0" r="3.1" fill="#ffd27a"/>
+<circle cx="607.5" cy="141.4" r="1.9" fill="#ffd27a"/>
+<circle cx="718.3" cy="377.1" r="2.9" fill="#ffd27a"/>
+<circle cx="671.5" cy="436.4" r="2.3" fill="#ffd27a"/>
+<circle cx="661.3" cy="446.9" r="1.7" fill="#ffd27a"/>
+<circle cx="507.9" cy="173.2" r="2.2" fill="#ffd27a"/>
+<circle cx="635.5" cy="439.5" r="3.2" fill="#ffd27a"/>
+<circle cx="651.0" cy="143.9" r="3.0" fill="#ffd27a"/>
+<circle cx="638.5" cy="442.8" r="3.0" fill="#ffd27a"/>
+<circle cx="506.9" cy="174.7" r="3.2" fill="#ffd27a"/>
+<circle cx="635.1" cy="439.2" r="2.8" fill="#ffd27a"/>
+<circle cx="526.5" cy="425.9" r="1.6" fill="#ffd27a"/>
+<circle cx="600" cy="290" r="140" fill="#352b22" stroke="#2b2118" stroke-width="3"/>
+<circle cx="700.1" cy="353.6" r="1.9" fill="#ffd27a"/>
+<circle cx="510.0" cy="223.5" r="2.3" fill="#ffd27a"/>
+<circle cx="711.7" cy="260.7" r="2.5" fill="#ffd27a"/>
+<circle cx="670.8" cy="211.3" r="1.8" fill="#ffd27a"/>
+<circle cx="705.9" cy="221.3" r="1.9" fill="#ffd27a"/>
+<circle cx="645.7" cy="404.9" r="3.1" fill="#ffd27a"/>
+<circle cx="642.9" cy="413.1" r="3.0" fill="#ffd27a"/>
+<circle cx="509.7" cy="221.3" r="1.7" fill="#ffd27a"/>
+<circle cx="727.0" cy="321.5" r="1.9" fill="#ffd27a"/>
+<circle cx="569.5" cy="186.2" r="2.9" fill="#ffd27a"/>
+<circle cx="510.1" cy="227.7" r="1.8" fill="#ffd27a"/>
+<circle cx="581.1" cy="189.6" r="1.9" fill="#ffd27a"/>
+<circle cx="481.5" cy="243.6" r="2.5" fill="#ffd27a"/>
+<circle cx="575.6" cy="417.0" r="1.8" fill="#ffd27a"/>
+<circle cx="708.0" cy="301.3" r="2.3" fill="#ffd27a"/>
+<circle cx="698.1" cy="329.2" r="2.1" fill="#ffd27a"/>
+<circle cx="506.3" cy="244.3" r="2.1" fill="#ffd27a"/>
+<circle cx="701.7" cy="206.9" r="2.6" fill="#ffd27a"/>
+<circle cx="557.2" cy="179.3" r="1.7" fill="#ffd27a"/>
+<circle cx="698.1" cy="312.0" r="3.0" fill="#ffd27a"/>
+<circle cx="560.3" cy="165.3" r="1.5" fill="#ffd27a"/>
+<circle cx="524.3" cy="202.8" r="2.7" fill="#ffd27a"/>
+<circle cx="600" cy="290" r="95" fill="#40342a" stroke="#2b2118" stroke-width="3"/>
+<circle cx="563.5" cy="369.0" r="1.6" fill="#ffd27a"/>
+<circle cx="524.7" cy="267.6" r="3.0" fill="#ffd27a"/>
+<circle cx="593.7" cy="212.7" r="2.8" fill="#ffd27a"/>
+<circle cx="657.0" cy="256.3" r="2.7" fill="#ffd27a"/>
+<circle cx="667.3" cy="241.6" r="2.2" fill="#ffd27a"/>
+<circle cx="620.8" cy="210.0" r="2.5" fill="#ffd27a"/>
+<circle cx="552.4" cy="242.5" r="2.5" fill="#ffd27a"/>
+<circle cx="555.4" cy="253.6" r="2.6" fill="#ffd27a"/>
+<circle cx="683.1" cy="286.5" r="2.7" fill="#ffd27a"/>
+<circle cx="540.0" cy="340.6" r="2.5" fill="#ffd27a"/>
+<circle cx="523.8" cy="319.9" r="1.6" fill="#ffd27a"/>
+<circle cx="600.1" cy="234.0" r="2.5" fill="#ffd27a"/>
+<circle cx="538.1" cy="297.4" r="2.7" fill="#ffd27a"/>
+<circle cx="525.3" cy="291.3" r="3.1" fill="#ffd27a"/>
+<circle cx="598.0" cy="345.3" r="2.0" fill="#ffd27a"/>
+<circle cx="573.2" cy="234.7" r="1.8" fill="#ffd27a"/>
+<circle cx="663.2" cy="247.5" r="2.3" fill="#ffd27a"/>
+<circle cx="650.9" cy="248.8" r="2.6" fill="#ffd27a"/>
+<circle cx="621.9" cy="355.2" r="2.9" fill="#ffd27a"/>
+<circle cx="671.4" cy="247.3" r="2.2" fill="#ffd27a"/>
+<circle cx="543.6" cy="257.5" r="1.7" fill="#ffd27a"/>
+<circle cx="518.2" cy="291.8" r="2.9" fill="#ffd27a"/>
+<circle cx="579.4" cy="207.1" r="2.0" fill="#ffd27a"/>
+<circle cx="633.8" cy="350.6" r="2.0" fill="#ffd27a"/>
+<circle cx="615.3" cy="356.5" r="2.6" fill="#ffd27a"/>
+<circle cx="535.0" cy="292.5" r="2.9" fill="#ffd27a"/>
+<circle cx="600" cy="290" r="30" fill="#6d8a5a" stroke="#2b2118" stroke-width="3"/>
+<text x="600" y="612" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="22" fill="#4a3b2b">модель Мо-цзы: мир внутри вложенных сфер, свет звёзд — огонь, видный сквозь отверстия</text>
+</svg>

@@ -27,22 +27,31 @@ PAUSE = 3
 
 # номер главы -> файл на Commons
 FILES = {
+    1: "View of Grand Auditorium of Tsinghua University.jpg",
     2: "Rachel-Carson.jpg",
     3: "Radio Telescope Effelsberg - 36956392190.jpg",
     5: "Billard Break Shot.jpg",
     7: "Portraits of Famous Men - King Wen of Zhou.jpg",
+    8: "Birch (Betula) bark.jpg",
     9: "WMAP 2012.png",  # сохранено в song-09.jpg (пережато из PNG)
+    10: "Snowy Beijing night.jpg",
+    12: "Yalu river (nonni river tributary) in Greater Khingan range, Manchuria, China.JPG",
     13: "Arecibo Observatory Aerial.jpg",
+    14: "A River in Greater Khingan Forest.jpg",
     15: "Copernican heliocentrism diagram-2.jpg",
     17: "Qin Terracotta Army, Pit 1 18.jpg",
     19: "Wanda von Debschitz-Kunowski Albert Einstein beim Geigenspiel 1927.jpg",
     20: "Hubble's Best Image of Alpha Centauri A and B (29327410501).jpg",
+    21: "Abandoned halls of Rüdersdorf chemical plant.jpg",
     22: "Full disk view of the sun June 21, 2010 (4721839258).jpg",
+    25: "Side of the Cliff (11408060706).jpg",
+    26: "Farmhouse, Beihong, Aug 2019.jpg",
     27: "Oil spill Mobile - Briefings & Oiled Bird cleaning 077 oiled brown pelican before cleaning (5014727141).jpg",
     28: "Supertanker AbQaiq.jpg",
     30: "Views of the LHC tunnel sector 3-4, tirage 2.jpg",
     31: "SS Kentuckian, Panama Canal.jpg",
     34: "CSIRO ScienceImage 7007 Plague locusts on the move.jpg",
+    35: "Cloudy sunset over forest in Taganai mountain range, Chelyabinsk Oblast, Russia.jpg",
 }
 
 
@@ -68,7 +77,7 @@ def main():
     for n, title in FILES.items():
         ext = ".png" if title.lower().endswith(".png") else ".jpg"
         dest = os.path.join(OUT, "song-%02d%s" % (n, ext))
-        if os.path.exists(dest):
+        if os.path.exists(dest) or os.path.exists(dest[:-4] + ".jpg"):
             print("%02d уже есть" % n)
             continue
         q = urllib.parse.urlencode({

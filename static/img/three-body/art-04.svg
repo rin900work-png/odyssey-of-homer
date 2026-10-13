@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640">
+<defs><linearGradient id="desk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b1714"/><stop offset="1" stop-color="#3a2e25"/></linearGradient><filter id="sh"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity=".5"/></filter></defs>
+<rect width="1200" height="640" fill="url(#desk)"/>
+<g transform="rotate(-4 600 320)" filter="url(#sh)">
+<rect x="300" y="110" width="600" height="420" fill="#f4efe4"/>
+<line x1="330" y1="190" x2="870" y2="190" stroke="#c9d6e3" stroke-width="1"/>
+<line x1="330" y1="224" x2="870" y2="224" stroke="#c9d6e3" stroke-width="1"/>
+<line x1="330" y1="258" x2="870" y2="258" stroke="#c9d6e3" stroke-width="1"/>
+<line x1="330" y1="292" x2="870" y2="292" stroke="#c9d6e3" stroke-width="1"/>
+<line x1="330" y1="326" x2="870" y2="326" stroke="#c9d6e3" stroke-width="1"/>
+<line x1="330" y1="360" x2="870" y2="360" stroke="#c9d6e3" stroke-width="1"/>
+<line x1="330" y1="394" x2="870" y2="394" stroke="#c9d6e3" stroke-width="1"/>
+<line x1="330" y1="428" x2="870" y2="428" stroke="#c9d6e3" stroke-width="1"/>
+<line x1="330" y1="462" x2="870" y2="462" stroke="#c9d6e3" stroke-width="1"/>
+<line x1="330" y1="496" x2="870" y2="496" stroke="#c9d6e3" stroke-width="1"/>
+<line x1="370" y1="110" x2="370" y2="530" stroke="#e7b3a8" stroke-width="1.2"/>
+<text x="600" y="290" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="40" fill="#2a3550">Физики никогда не было</text>
+<text x="600" y="356" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="40" fill="#2a3550">и не будет.</text>
+</g></svg>
