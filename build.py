@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Сборка статического сайта-разбора античного эпоса в папку docs/.
+"""Сборка статического сайта-разбора в папку docs/.
 
-Сайт трёхчастный: «Одиссея», «Илиада» и «Энеида». Титульная страница
-(index.html) — выбор поэмы, дальше у каждой своё оглавление и свои песни.
+На сайте четыре книги: «Одиссея», «Илиада», «Энеида» и роман Лю Цысиня
+«Задача трёх тел». Титульная страница (index.html) — выбор книги, дальше у
+каждой своё оглавление и свои песни (у романа — главы).
 
 Без внешних зависимостей — только стандартная библиотека Python 3.
 Запуск:  python3 build.py
@@ -15,6 +16,8 @@
     docs/iliad-song-01..24.html    — песни «Илиады»
     docs/aeneid.html               — оглавление «Энеиды»
     docs/aeneid-song-01..12.html   — песни «Энеиды»
+    docs/three-body.html           — оглавление «Задачи трёх тел»
+    docs/three-body-song-01..35.html — главы «Задачи трёх тел»
     docs/song-01..24.html          — заглушки-редиректы со старых адресов
     docs/style.css, docs/img/, docs/.nojekyll
 
@@ -31,6 +34,7 @@ import content_aeneid
 import content_iliad
 import content_names
 import content_odyssey
+import content_three_body
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "docs")
@@ -41,10 +45,17 @@ STANZA = 10      # стихов в одной визуальной строфе
 NUM_EVERY = 10   # показывать номер стиха каждые N строк
 
 SITE_TITLE = "Гомер и Вергилий"
-SITE_SUB = "«Одиссея», «Илиада» и «Энеида» — краткий разбор по песням"
+SITE_SUB = "«Одиссея», «Илиада», «Энеида» и «Задача трёх тел» — краткий разбор"
 NAMES_LINK_TEXT = "Боги: кто есть кто"
 
-# Описание поэм. Тексты и картинки лежат в texts/<slug>/ и static/img/<slug>/.
+# Как называются части книги: у поэм — песни, у романа — главы.
+# forms — для склонения под число (1 песнь / 2 песни / 5 песен).
+UNITS = {
+    "song": {"forms": ("песнь", "песни", "песен"), "label": "Песнь", "all": "Все песни"},
+    "chapter": {"forms": ("глава", "главы", "глав"), "label": "Глава", "all": "Все главы"},
+}
+
+# Описание книг. Тексты и картинки лежат в texts/<slug>/ и static/img/<slug>/.
 BOOKS = [
     {
         "slug": "odyssey",
@@ -80,23 +91,45 @@ BOOKS = [
                 "любовь Дидоны, войну с Турном и нисхождение в царство мёртвых.",
         "legacy": False,
     },
+    {
+        "slug": "three-body",
+        "content": content_three_body,
+        "short": "Задача трёх тел",
+        "unit": "chapter",
+        "cover": None,
+        # Роман 2006/2008 года и перевод О. Глушковой (2017) под авторским правом —
+        # полного текста на сайте не будет, только разбор.
+        "translator": None,
+        "no_text": "без полного текста: книга под авторским правом",
+        # Справочник имён богов к роману не относится — ссылку в шапке не показываем.
+        "names_link": False,
+        "card": "Китайская научная фантастика: дочь убитого в Культурную революцию "
+                "физика отвечает на сигнал из космоса, а через сорок лет учёный "
+                "расследует самоубийства физиков и игру о мире с тремя солнцами.",
+        "legacy": False,
+    },
 ]
 
 
-def pesni_word(n):
-    """Склонение слова «песнь» под число: 1 песнь, 2–4 песни, 5+ песен."""
+def unit(book):
+    return UNITS[book.get("unit", "song")]
+
+
+def plural(n, forms):
+    """Склонение под число: forms = (1, 2–4, 5+), например ("песнь", "песни", "песен")."""
+    one, few, many = forms
     if 11 <= n % 100 <= 14:
-        return "песен"
+        return many
     tail = n % 10
     if tail == 1:
-        return "песнь"
+        return one
     if 2 <= tail <= 4:
-        return "песни"
-    return "песен"
+        return few
+    return many
 
 
 def book_list_str(books):
-    """«Одиссея», «Илиада» и «Энеида» — с союзом перед последним пунктом."""
+    """«Одиссея», «Илиада», «Энеида» и … — с союзом перед последним пунктом."""
     names = ['«%s»' % b["short"] for b in books]
     if len(names) == 1:
         return names[0]
@@ -188,23 +221,26 @@ def layout(title, body, book=None):
         footer = "%s · %s · краткий разбор по песням" % (e(SITE_TITLE), e(book_list_str(BOOKS)))
     else:
         theme = "theme-%s" % book["slug"]
+        names_link = ""
+        if book.get("names_link", True):
+            names_link = '  <a class="brand-names" href="names.html">%s</a>\n' % e(NAMES_LINK_TEXT)
         header = (
             '<header class="site-header">\n'
             '  <a class="brand" href="%s">%s</a>\n'
             '  <span class="brand-sub">%s</span>\n'
             '  <a class="brand-home" href="index.html">%s</a>\n'
-            '  <a class="brand-names" href="names.html">%s</a>\n'
+            "%s"
             "</header>\n"
         ) % (
             e(book_href(book)),
             e(book["content"].META["title"]),
             e(book["content"].META["subtitle"]),
             e(SITE_TITLE),
-            e(NAMES_LINK_TEXT),
+            names_link,
         )
         count = len(book["content"].SONGS)
         footer = "%s · «%s» · %d %s · краткий разбор" % (
-            e(SITE_TITLE), e(book["short"]), count, pesni_word(count)
+            e(SITE_TITLE), e(book["short"]), count, plural(count, unit(book)["forms"])
         )
 
     return (
@@ -235,18 +271,18 @@ def build_landing():
     for b in BOOKS:
         m = b["content"].META
         count = len(b["content"].SONGS)
-        cover = ""
+        # Без обложки — нейтральная плашка той же высоты, чтобы карточки не прыгали
+        cover = '  <div class="card-art card-art-blank" aria-hidden="true"></div>\n'
         if b.get("cover"):
             cover = (
                 '  <img class="card-art" src="%s" alt="%s" loading="lazy">\n'
                 % (e(img_src(b, b["cover"])), e(m["title"]))
             )
+        word = plural(count, unit(b)["forms"])
         if b.get("translator"):
-            meta_line = "%d %s · полный текст в переводе %s" % (
-                count, pesni_word(count), b["translator"]
-            )
+            meta_line = "%d %s · полный текст в переводе %s" % (count, word, b["translator"])
         else:
-            meta_line = "%d %s · без полного текста (пока)" % (count, pesni_word(count))
+            meta_line = "%d %s · %s" % (count, word, b.get("no_text", "без полного текста (пока)"))
         cards.append(
             '<a class="card card-%s" href="%s">\n'
             "%s"
@@ -275,6 +311,9 @@ def build_landing():
         "Ахиллеса на десятом году осады Трои, «Одиссея» — о десятилетнем возвращении домой "
         "после её падения; «Энеида» Вергилия — о том, как уцелевший троянец приводит "
         "спутников в Италию, чтобы стать родоначальником Рима.</p>\n"
+        "  <p>И одна книга совсем из другой эпохи — «Задача трёх тел» Лю Цысиня, "
+        "научно-фантастический роман о первом контакте человечества с иным разумом, "
+        "разобранный по главам.</p>\n"
         "</section>\n\n"
         '<div class="cards">\n%s\n</div>\n'
     ) % (e(SITE_TITLE), e(SITE_SUB), "\n".join(cards))
@@ -293,7 +332,7 @@ def build_names_page():
         for gr, la, desc in content_names.HEROES
     )
     body = (
-        '<p class="crumb"><a href="index.html">← Все поэмы</a></p>\n'
+        '<p class="crumb"><a href="index.html">← Все книги</a></p>\n'
         '<section class="hero">\n'
         "  <h1>%s</h1>\n"
         '  <p class="lede">%s</p>\n'
@@ -372,9 +411,9 @@ def build_book_index(book):
         '<a href="%s">%s</a>' % (e(book_href(o)), e(o["content"].META["title"]))
         for o in others
     )
-    other_label = "Читать другую поэму" if len(others) == 1 else "Читать другие поэмы"
+    other_label = "Читать другую книгу" if len(others) == 1 else "Другие книги на сайте"
     body = (
-        '<p class="crumb"><a href="index.html">← Все поэмы</a></p>\n'
+        '<p class="crumb"><a href="index.html">← Все книги</a></p>\n'
         '<section class="hero">\n'
         "  <h1>%s</h1>\n"
         '  <p class="lede">%s</p>\n'
@@ -406,6 +445,7 @@ def build_song(book, s):
     C = book["content"]
     n = s["n"]
     total = len(C.SONGS)
+    u = unit(book)
     moments = "\n".join("    <li>%s</li>" % e(mm) for mm in s["moments"])
     reader_html = render_reader(book, n)
 
@@ -419,21 +459,21 @@ def build_song(book, s):
         ) % (e(img_src(book, s["img"])), e(s["title"]), e(s.get("credit", "")))
 
     prev_link = (
-        '<a class="nav-prev" href="%s">← Песнь %d</a>' % (song_href(book, n - 1), n - 1)
+        '<a class="nav-prev" href="%s">← %s %d</a>' % (song_href(book, n - 1), u["label"], n - 1)
         if n > 1
         else '<span class="nav-prev nav-off">←</span>'
     )
     next_link = (
-        '<a class="nav-next" href="%s">Песнь %d →</a>' % (song_href(book, n + 1), n + 1)
+        '<a class="nav-next" href="%s">%s %d →</a>' % (song_href(book, n + 1), u["label"], n + 1)
         if n < total
         else '<span class="nav-next nav-off">→</span>'
     )
 
     body = (
-        '<p class="crumb"><a href="%s">← Все песни</a> · '
-        '<a href="index.html">все поэмы</a></p>\n'
+        '<p class="crumb"><a href="%s">← %s</a> · '
+        '<a href="index.html">все книги</a></p>\n'
         '<article class="song">\n'
-        '  <p class="song-eyebrow">%s · песнь %d из %d</p>\n'
+        '  <p class="song-eyebrow">%s · %s %d из %d</p>\n'
         "  <h1>%s</h1>\n"
         "%s"
         '  <dl class="song-meta">\n'
@@ -451,7 +491,9 @@ def build_song(book, s):
         '<nav class="song-nav">%s%s</nav>\n'
     ) % (
         e(book_href(book)),
+        e(u["all"]),
         e(book["short"]),
+        e(u["forms"][0]),
         n,
         total,
         e(s["title"]),
@@ -465,7 +507,7 @@ def build_song(book, s):
         prev_link,
         next_link,
     )
-    return layout("%s — песнь %d, %s" % (book["short"], n, s["title"]), body, book=book)
+    return layout("%s — %s %d, %s" % (book["short"], u["forms"][0], n, s["title"]), body, book=book)
 
 
 def build_redirect(target, title):
@@ -526,7 +568,7 @@ def main():
     # Отключаем обработку Jekyll на GitHub Pages — раздаём файлы как есть
     write(os.path.join(OUT, ".nojekyll"), "")
 
-    print("Готово: титульная + %d страниц оглавления + %d страниц песен в %s"
+    print("Готово: титульная + %d страниц оглавления + %d страниц песен и глав в %s"
           % (len(BOOKS), pages, OUT))
 
 

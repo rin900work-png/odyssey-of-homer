@@ -1,6 +1,6 @@
 /* Гомер и Вергилий — статический разбор. Общий пергамент, у каждой поэмы свой
    акцент: «Одиссея» — эгейская синь, «Илиада» — троянская бронза,
-   «Энеида» — имперский пурпур. */
+   «Энеида» — имперский пурпур, «Задача трёх тел» — ночная бирюза. */
 
 :root {
   --bg: #fbf7ef;
@@ -25,6 +25,11 @@ body.theme-aeneid {
   --accent-soft: #ede4f0;
   --gold: #a9743b;        /* римское золото */
 }
+body.theme-three-body {
+  --accent: #1d4f57;      /* ночное небо над Радарным пиком */
+  --accent-soft: #e3eeef;
+  --gold: #b5562b;        /* «Красный берег» / три солнца */
+}
 body.theme-site {
   --accent: #3d3a34;      /* титульная — нейтральный тёмный */
   --accent-soft: #efeae0;
@@ -32,6 +37,7 @@ body.theme-site {
 }
 body.theme-iliad .brand-sub { color: #eccfc7; }
 body.theme-aeneid .brand-sub { color: #e4d5e9; }
+body.theme-three-body .brand-sub { color: #cfe2e4; }
 body.theme-site .brand-sub { color: #d8d2c6; }
 
 * { box-sizing: border-box; }
@@ -399,7 +405,7 @@ a:hover { color: var(--gold); }
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 22px;
   margin: 26px 0 8px;
 }
@@ -435,6 +441,15 @@ a:hover { color: var(--gold); }
 .card-odyssey .card-text h2 { color: #1b4965; }
 .card-iliad .card-text h2 { color: #7a2b22; }
 .card-aeneid .card-text h2 { color: #5b3a6b; }
+.card-three-body .card-text h2 { color: #1d4f57; }
+/* Плашка вместо обложки: три «солнца» на ночном небе */
+.card-art-blank {
+  background:
+    radial-gradient(circle at 30% 42%, #f2b46b 0 9px, transparent 10px),
+    radial-gradient(circle at 56% 30%, #e8834a 0 6px, transparent 7px),
+    radial-gradient(circle at 70% 62%, #f6d39a 0 4px, transparent 5px),
+    linear-gradient(160deg, #10282d, #1d4f57);
+}
 .card-blurb {
   margin: 0 0 10px;
   font-size: 16px;
@@ -456,10 +471,6 @@ a:hover { color: var(--gold); }
   color: var(--muted);
 }
 .other-book a { color: var(--accent); }
-
-@media (max-width: 700px) {
-  .cards { grid-template-columns: 1fr 1fr; }
-}
 
 @media (max-width: 620px) {
   .cards { grid-template-columns: 1fr; gap: 18px; }
