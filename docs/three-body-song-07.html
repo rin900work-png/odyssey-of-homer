@@ -14,6 +14,7 @@
   <a class="brand-names" href="three-body-science.html">Наука: правда или вымысел</a>
 </header>
 <main class="wrap">
+<div class="spoiler-mode" role="group" aria-label="Режим чтения"><span>Режим:</span><button type="button" data-mode="first">читаю впервые</button><button type="button" data-mode="read">уже прочитал(а)</button></div>
 <p class="crumb"><a href="three-body.html">← Все главы</a> · <a href="index.html">все книги</a></p>
 <article class="song">
   <p class="song-eyebrow">Задача трёх тел · глава 7 из 35</p>
@@ -36,7 +37,7 @@
     <li>Три «летучие звезды» и долгая ночь: цивилизация замерзает насмерть.</li>
   </ul>
   <h2 class="sec-h">Значение</h2>
-  <p class="significance">Первый из семи игровых эпизодов, сквозь которые Ван (и читатель) постепенно разгадывает устройство странного мира. Игра оказывается головоломкой: понять, почему солнце не подчиняется законам.</p>
+  <details class="spoiler"><summary>Значение главы может забегать вперёд — показать</summary><div class="spoiler-body"><p class="significance">Первый из семи игровых эпизодов, сквозь которые Ван (и читатель) постепенно разгадывает устройство странного мира. Игра оказывается головоломкой: понять, почему солнце не подчиняется законам.</p></div></details>
   <h2 class="sec-h">Наука в этой главе</h2>
   <ul class="sci-links">
     <li><a href="three-body-science.html#dehydration">Обезвоживание</a> <span class="verdict verdict-partly">отчасти правда</span></li>
@@ -48,5 +49,25 @@
 <footer class="site-footer">
   <p>Гомер и Вергилий · «Задача трёх тел» · 35 глав · краткий разбор</p>
 </footer>
+<script>
+(function () {
+  var key = "spoilers-three-body", mode = "first";
+  try { mode = localStorage.getItem(key) || "first"; } catch (err) {}
+  function apply(m) {
+    document.querySelectorAll("details.spoiler").forEach(function (d) { d.open = (m === "read"); });
+    document.querySelectorAll(".spoiler-mode button").forEach(function (b) {
+      b.classList.toggle("on", b.getAttribute("data-mode") === m);
+    });
+  }
+  document.querySelectorAll(".spoiler-mode button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var m = b.getAttribute("data-mode");
+      try { localStorage.setItem(key, m); } catch (err) {}
+      apply(m);
+    });
+  });
+  apply(mode);
+})();
+</script>
 </body>
 </html>

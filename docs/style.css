@@ -550,3 +550,44 @@ body.theme-three-body figure.art img {
 .sci-ch a { color: var(--accent); }
 ul.sci-links { padding-left: 20px; }
 ul.sci-links li { margin: 4px 0; }
+
+/* Режим «читаю впервые»: спойлеры свёрнуты */
+.spoiler-mode {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: -8px 0 18px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.spoiler-mode button {
+  font: inherit;
+  padding: 3px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+}
+.spoiler-mode button.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+details.spoiler { margin: 4px 0 10px; }
+details.spoiler > summary {
+  display: inline-block;
+  cursor: pointer;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--gold);
+  list-style: none;
+  border-bottom: 1px dashed currentColor;
+}
+details.spoiler > summary::-webkit-details-marker { display: none; }
+details.spoiler > summary::before { content: "▸ "; font-style: normal; }
+details.spoiler[open] > summary::before { content: "▾ "; }
+details.spoiler[open] > summary { opacity: .65; }
+.spoiler-body { display: block; margin-top: 6px; }
+.char-text details.spoiler { margin: 4px 0 0; }

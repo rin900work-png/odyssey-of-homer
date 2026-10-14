@@ -105,8 +105,10 @@ BOOKS = [
         # Справочник имён богов к роману не относится — ссылку в шапке не показываем.
         "names_link": False,
         "card": "Китайская научная фантастика: дочь убитого в Культурную революцию "
-                "физика отвечает на сигнал из космоса, а через сорок лет учёный "
-                "расследует самоубийства физиков и игру о мире с тремя солнцами.",
+                "физика попадает на секретную базу «Красный берег», а через сорок лет "
+                "учёный расследует самоубийства физиков и игру о мире с тремя солнцами.",
+        # Режим «читаю впервые / уже прочитал»: спойлеры свёрнуты по умолчанию
+        "spoilers": True,
         "legacy": False,
     },
 ]
@@ -123,6 +125,52 @@ VERDICTS = {
     "partly": "отчасти правда",
     "fiction": "вымысел",
 }
+
+
+def spoiler(book, inner, label, tag="div"):
+    """Блок, который в режиме «читаю впервые» свёрнут (у книг с "spoilers": True).
+
+    У остальных книг просто возвращает содержимое как есть.
+    """
+    if not book.get("spoilers"):
+        return inner
+    return (
+        '<details class="spoiler"><summary>%s</summary>'
+        '<%s class="spoiler-body">%s</%s></details>' % (e(label), tag, inner, tag)
+    )
+
+
+SPOILER_BAR = (
+    '<div class="spoiler-mode" role="group" aria-label="Режим чтения">'
+    '<span>Режим:</span>'
+    '<button type="button" data-mode="first">читаю впервые</button>'
+    '<button type="button" data-mode="read">уже прочитал(а)</button>'
+    "</div>\n"
+)
+
+# Переключатель режима: в «уже прочитал» все спойлеры раскрыты. Выбор хранится в
+# localStorage отдельно для каждой книги. Без JavaScript спойлеры просто свёрнуты.
+SPOILER_JS = """<script>
+(function () {
+  var key = "spoilers-%s", mode = "first";
+  try { mode = localStorage.getItem(key) || "first"; } catch (err) {}
+  function apply(m) {
+    document.querySelectorAll("details.spoiler").forEach(function (d) { d.open = (m === "read"); });
+    document.querySelectorAll(".spoiler-mode button").forEach(function (b) {
+      b.classList.toggle("on", b.getAttribute("data-mode") === m);
+    });
+  }
+  document.querySelectorAll(".spoiler-mode button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var m = b.getAttribute("data-mode");
+      try { localStorage.setItem(key, m); } catch (err) {}
+      apply(m);
+    });
+  });
+  apply(mode);
+})();
+</script>
+"""
 
 
 def science(book):
@@ -264,6 +312,11 @@ def layout(title, body, book=None):
             e(SITE_TITLE), e(book["short"]), count, plural(count, unit(book)["forms"])
         )
 
+    bar = script = ""
+    if book is not None and book.get("spoilers"):
+        bar = SPOILER_BAR
+        script = SPOILER_JS % book["slug"]
+
     return (
         "<!doctype html>\n"
         '<html lang="ru">\n'
@@ -276,14 +329,16 @@ def layout(title, body, book=None):
         '<body class="%s">\n'
         "%s"
         '<main class="wrap">\n'
+        "%s"
         "%s\n"
         "</main>\n"
         '<footer class="site-footer">\n'
         "  <p>%s</p>\n"
         "</footer>\n"
+        "%s"
         "</body>\n"
         "</html>\n"
-    ) % (e(title), theme, header, body, footer)
+    ) % (e(title), theme, header, bar, body, footer, script)
 
 
 def build_landing():
@@ -379,6 +434,20 @@ def build_names_page():
     return layout("Боги и герои — греческие и латинские имена", body, book=None)
 
 
+def part_blurb(book, p):
+    text = e(p["blurb"])
+    if p.get("blurb_spoiler"):
+        text += " " + spoiler(book, e(p["blurb_spoiler"]), "подробнее (спойлер)", tag="span")
+    return text
+
+
+def char_text(book, c):
+    text = "<strong>%s.</strong> %s" % (e(c["name"]), e(c["desc"]))
+    if c.get("spoiler"):
+        text += spoiler(book, e(c["spoiler"]), "что с ним будет дальше (спойлер)", tag="span")
+    return text
+
+
 def build_book_index(book):
     C = book["content"]
     m = C.META
@@ -399,7 +468,7 @@ def build_book_index(book):
             '  <p class="part-blurb">%s</p>\n'
             '  <ol class="song-list">\n%s\n  </ol>\n'
             "</section>"
-            % (e(p["num"]), e(p["name"]), e(p["range"]), e(p["blurb"]), "\n".join(items))
+            % (e(p["num"]), e(p["name"]), e(p["range"]), part_blurb(book, p), "\n".join(items))
         )
 
     char_items = []
@@ -411,15 +480,12 @@ def build_book_index(book):
                 % (e(img_src(book, c["img"])), e(c["name"]), e(c.get("credit", "")))
             )
             char_items.append(
-                '    <li class="char has-art">%s'
-                '<div class="char-text"><strong>%s.</strong> %s</div></li>'
-                % (art, e(c["name"]), e(c["desc"]))
+                '    <li class="char has-art">%s<div class="char-text">%s</div></li>'
+                % (art, char_text(book, c))
             )
         else:
             char_items.append(
-                '    <li class="char">'
-                '<div class="char-text"><strong>%s.</strong> %s</div></li>'
-                % (e(c["name"]), e(c["desc"]))
+                '    <li class="char"><div class="char-text">%s</div></li>' % char_text(book, c)
             )
     chars = "\n".join(char_items)
     themes = "\n".join(
@@ -454,7 +520,7 @@ def build_book_index(book):
         '<h2 class="sec-h">Главные герои</h2>\n'
         '<ul class="chars">\n%s\n</ul>\n\n'
         '<h2 class="sec-h">Сквозные темы</h2>\n'
-        '<ul class="plain">\n%s\n</ul>\n\n'
+        "%s\n\n"
         '<p class="other-book">%s: %s</p>\n'
     ) % (
         e(m["title"]),
@@ -464,7 +530,8 @@ def build_book_index(book):
         science_teaser,
         "\n".join(parts_html),
         chars,
-        themes,
+        spoiler(book, '<ul class="plain">\n%s\n</ul>' % themes,
+                "Темы раскрывают сюжет целиком — показать"),
         other_label,
         other_links,
     )
@@ -529,7 +596,7 @@ def build_song(book, s):
         '  <h2 class="sec-h">Главные моменты</h2>\n'
         '  <ul class="moments">\n%s\n  </ul>\n'
         '  <h2 class="sec-h">Значение</h2>\n'
-        '  <p class="significance">%s</p>\n'
+        "  %s\n"
         "%s"
         "</article>\n"
         "%s"
@@ -547,7 +614,8 @@ def build_song(book, s):
         e(s["who"]),
         e(s["summary"]),
         moments,
-        e(s["significance"]),
+        spoiler(book, '<p class="significance">%s</p>' % e(s["significance"]),
+                "Значение главы может забегать вперёд — показать"),
         sci_html,
         reader_html,
         prev_link,
@@ -573,12 +641,14 @@ def build_science_page(book):
             '  <div class="sci-body">\n'
             '    <p class="sci-head"><span class="verdict verdict-%s">%s</span></p>\n'
             "    <h2>%s</h2>\n"
-            "    <p>%s</p>\n"
+            "    %s\n"
             '    <p class="sci-ch">%s: %s</p>\n'
             "  </div>\n"
             "</section>"
             % (e(t["id"]), art, e(t["verdict"]), e(VERDICTS[t["verdict"]]), e(t["title"]),
-               e(t["text"]), e(unit(book)["all"]), chapters)
+               spoiler(book, "<p>%s</p>" % e(t["text"]),
+                       "Справка — спойлер до главы %d включительно. Показать" % max(t["chapters"])),
+               e(unit(book)["all"]), chapters)
         )
     counts = {v: sum(1 for t in science(book) if t["verdict"] == v) for v in VERDICTS}
     legend = " · ".join(
