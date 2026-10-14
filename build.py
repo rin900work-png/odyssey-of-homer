@@ -642,13 +642,13 @@ def build_science_page(book):
             '    <p class="sci-head"><span class="verdict verdict-%s">%s</span></p>\n'
             "    <h2>%s</h2>\n"
             "    %s\n"
-            '    <p class="sci-ch">%s: %s</p>\n'
+            '    <p class="sci-ch">Где в книге: %s %s</p>\n'
             "  </div>\n"
             "</section>"
             % (e(t["id"]), art, e(t["verdict"]), e(VERDICTS[t["verdict"]]), e(t["title"]),
                spoiler(book, "<p>%s</p>" % e(t["text"]),
                        "Справка — спойлер до главы %d включительно. Показать" % max(t["chapters"])),
-               e(unit(book)["all"]), chapters)
+               e(unit(book)["forms"][1]), chapters)
         )
     counts = {v: sum(1 for t in science(book) if t["verdict"] == v) for v in VERDICTS}
     legend = " · ".join(
