@@ -444,7 +444,7 @@ def part_blurb(book, p):
 def char_text(book, c):
     text = "<strong>%s.</strong> %s" % (e(c["name"]), e(c["desc"]))
     if c.get("spoiler"):
-        text += spoiler(book, e(c["spoiler"]), "что с ним будет дальше (спойлер)", tag="span")
+        text += spoiler(book, e(c["spoiler"]), "дальше по сюжету (спойлер)", tag="span")
     return text
 
 
