@@ -498,3 +498,55 @@ body.theme-three-body figure.art img {
   border: none;
   box-shadow: none;
 }
+
+/* «Наука: правда или вымысел» */
+.sci-teaser {
+  display: block;
+  margin: 6px 0 26px;
+  padding: 14px 18px;
+  border-left: 3px solid var(--gold);
+  background: var(--accent-soft);
+  border-radius: 0 8px 8px 0;
+  color: var(--ink);
+  text-decoration: none;
+}
+.sci-teaser strong { color: var(--accent); }
+.sci-teaser:hover { background: #d6e7e9; }
+.verdict {
+  display: inline-block;
+  padding: 1px 9px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-style: normal;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  vertical-align: 1px;
+}
+.verdict-real { background: #dcefdc; color: #24612b; }
+.verdict-partly { background: #f6ead2; color: #8a5a12; }
+.verdict-fiction { background: #f4dede; color: #8f2a2a; }
+.sci-legend { font-size: 15px; color: var(--muted); }
+.sci-list { display: flex; flex-direction: column; gap: 22px; }
+.sci-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  scroll-margin-top: 16px;
+}
+.sci-card:target { box-shadow: 0 0 0 2px var(--gold); }
+.sci-art {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--line);
+}
+.sci-body { padding: 14px 20px 16px; }
+.sci-head { margin: 0 0 4px; }
+.sci-body h2 { margin: 0 0 8px; font-size: 23px; color: var(--accent); }
+.sci-body p { margin: 0 0 10px; }
+.sci-ch { font-size: 14px; color: var(--muted); font-style: italic; }
+.sci-ch a { color: var(--accent); }
+ul.sci-links { padding-left: 20px; }
+ul.sci-links li { margin: 4px 0; }

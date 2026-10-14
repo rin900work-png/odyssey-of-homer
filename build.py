@@ -18,6 +18,7 @@
     docs/aeneid-song-01..12.html   — песни «Энеиды»
     docs/three-body.html           — оглавление «Задачи трёх тел»
     docs/three-body-song-01..35.html — главы «Задачи трёх тел»
+    docs/three-body-science.html   — «Наука в книге: правда или вымысел»
     docs/song-01..24.html          — заглушки-редиректы со старых адресов
     docs/style.css, docs/img/, docs/.nojekyll
 
@@ -113,6 +114,23 @@ BOOKS = [
 
 def unit(book):
     return UNITS[book.get("unit", "song")]
+
+
+# Справки «правда или вымысел» (SCIENCE в content_*.py — пока только у романа)
+SCIENCE_LINK_TEXT = "Наука: правда или вымысел"
+VERDICTS = {
+    "real": "правда",
+    "partly": "отчасти правда",
+    "fiction": "вымысел",
+}
+
+
+def science(book):
+    return getattr(book["content"], "SCIENCE", None)
+
+
+def science_href(book):
+    return "%s-science.html" % book["slug"]
 
 
 def plural(n, forms):
@@ -224,6 +242,9 @@ def layout(title, body, book=None):
         names_link = ""
         if book.get("names_link", True):
             names_link = '  <a class="brand-names" href="names.html">%s</a>\n' % e(NAMES_LINK_TEXT)
+        if science(book):
+            names_link += '  <a class="brand-names" href="%s">%s</a>\n' % (
+                e(science_href(book)), e(SCIENCE_LINK_TEXT))
         header = (
             '<header class="site-header">\n'
             '  <a class="brand" href="%s">%s</a>\n'
@@ -411,6 +432,13 @@ def build_book_index(book):
         '<a href="%s">%s</a>' % (e(book_href(o)), e(o["content"].META["title"]))
         for o in others
     )
+    science_teaser = ""
+    if science(book):
+        science_teaser = (
+            '<a class="sci-teaser" href="%s"><strong>%s</strong> — %d справок: что в книге '
+            "настоящая наука, а что придумано для сюжета →</a>\n\n"
+            % (e(science_href(book)), e(SCIENCE_LINK_TEXT), len(science(book)))
+        )
     other_label = "Читать другую книгу" if len(others) == 1 else "Другие книги на сайте"
     body = (
         '<p class="crumb"><a href="index.html">← Все книги</a></p>\n'
@@ -420,6 +448,7 @@ def build_book_index(book):
         "  <p>%s</p>\n"
         "  <p>%s</p>\n"
         "</section>\n\n"
+        "%s"
         '<h2 class="sec-h">Композиция</h2>\n'
         "%s\n\n"
         '<h2 class="sec-h">Главные герои</h2>\n'
@@ -432,6 +461,7 @@ def build_book_index(book):
         e(m["subtitle"]),
         e(m["intro"]),
         e(m["in_medias_res"]),
+        science_teaser,
         "\n".join(parts_html),
         chars,
         themes,
@@ -448,6 +478,20 @@ def build_song(book, s):
     u = unit(book)
     moments = "\n".join("    <li>%s</li>" % e(mm) for mm in s["moments"])
     reader_html = render_reader(book, n)
+
+    sci_html = ""
+    topics = [t for t in (science(book) or []) if n in t["chapters"]]
+    if topics:
+        sci_html = (
+            '  <h2 class="sec-h">Наука в этой главе</h2>\n'
+            '  <ul class="sci-links">\n%s\n  </ul>\n'
+            % "\n".join(
+                '    <li><a href="%s#%s">%s</a> <span class="verdict verdict-%s">%s</span></li>'
+                % (e(science_href(book)), e(t["id"]), e(t["title"]), e(t["verdict"]),
+                   e(VERDICTS[t["verdict"]]))
+                for t in topics
+            )
+        )
 
     art_html = ""
     if s.get("img"):
@@ -486,6 +530,7 @@ def build_song(book, s):
         '  <ul class="moments">\n%s\n  </ul>\n'
         '  <h2 class="sec-h">Значение</h2>\n'
         '  <p class="significance">%s</p>\n'
+        "%s"
         "</article>\n"
         "%s"
         '<nav class="song-nav">%s%s</nav>\n'
@@ -503,11 +548,53 @@ def build_song(book, s):
         e(s["summary"]),
         moments,
         e(s["significance"]),
+        sci_html,
         reader_html,
         prev_link,
         next_link,
     )
     return layout("%s — %s %d, %s" % (book["short"], u["forms"][0], n, s["title"]), body, book=book)
+
+
+def build_science_page(book):
+    """Справки «правда или вымысел» по науке в книге."""
+    C = book["content"]
+    cards = []
+    for t in science(book):
+        art = ""
+        if t.get("img"):
+            art = '  <img class="sci-art" src="%s" alt="%s" loading="lazy">\n' % (
+                e(img_src(book, t["img"])), e(t["title"]))
+        chapters = ", ".join(
+            '<a href="%s">%d</a>' % (e(song_href(book, n)), n) for n in t["chapters"])
+        cards.append(
+            '<section class="sci-card" id="%s">\n'
+            "%s"
+            '  <div class="sci-body">\n'
+            '    <p class="sci-head"><span class="verdict verdict-%s">%s</span></p>\n'
+            "    <h2>%s</h2>\n"
+            "    <p>%s</p>\n"
+            '    <p class="sci-ch">%s: %s</p>\n'
+            "  </div>\n"
+            "</section>"
+            % (e(t["id"]), art, e(t["verdict"]), e(VERDICTS[t["verdict"]]), e(t["title"]),
+               e(t["text"]), e(unit(book)["all"]), chapters)
+        )
+    counts = {v: sum(1 for t in science(book) if t["verdict"] == v) for v in VERDICTS}
+    legend = " · ".join(
+        '<span class="verdict verdict-%s">%s</span> %d' % (v, e(label), counts[v])
+        for v, label in VERDICTS.items()
+    )
+    body = (
+        '<p class="crumb"><a href="%s">← %s</a> · <a href="index.html">все книги</a></p>\n'
+        '<section class="hero">\n'
+        "  <h1>Наука в книге: правда или вымысел</h1>\n"
+        "  <p>%s</p>\n"
+        '  <p class="sci-legend">%s</p>\n'
+        "</section>\n\n"
+        '<div class="sci-list">\n%s\n</div>\n'
+    ) % (e(book_href(book)), e(C.META["title"]), e(C.SCIENCE_INTRO), legend, "\n".join(cards))
+    return layout("%s — наука: правда или вымысел" % book["short"], body, book=book)
 
 
 def build_redirect(target, title):
@@ -545,6 +632,8 @@ def main():
     pages = 0
     for book in BOOKS:
         write(os.path.join(OUT, book_href(book)), build_book_index(book))
+        if science(book):
+            write(os.path.join(OUT, science_href(book)), build_science_page(book))
         for s in book["content"].SONGS:
             write(os.path.join(OUT, song_href(book, s["n"])), build_song(book, s))
             pages += 1
